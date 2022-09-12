@@ -1,5 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:mason_logger/mason_logger.dart';
+import 'package:neat_cli/core/constants/strings.dart';
+import 'package:neat_cli/core/errors/exceptions.dart';
 import 'package:process_run/shell.dart';
 
 class DependencyManager {
@@ -14,20 +16,24 @@ class DependencyManager {
 
   String get dependencie => deps.join(' ');
 
-  Future<int> addDep(Shell shell, String dep) async {
+  Future<int> addDep(Shell shell, List<String> dep) async {
     try {
-      final listDep = dep.split(',');
-      for (final element in listDep) {
-        if (deps.contains(element)) {
-          return ExitCode.usage.code;
+      final finalDep = <String>[];
+      for (final element in dep) {
+        if (!deps.contains(element)) {
+          finalDep.add(element);
+        } else {
+          Logger().warn('$element is already installed SKIPED');
         }
       }
+      if (finalDep.isNotEmpty) {
+        Logger().info('📥📥 Adding your dependencies ${finalDep.join('-')}');
+        await shell.run('flutter pub add ${finalDep.join(' ')}');
+      }
 
-      Logger().info('📥📥 Adding your dependencies ');
-      await shell.run('flutter pub add ${listDep.join(' ')}');
       return ExitCode.success.code;
     } catch (_) {
-      return ExitCode.ioError.code;
+      throw ErrorWhileInstallingYourDependencies(msg: errorInstallDeps);
     }
   }
 
@@ -37,7 +43,7 @@ class DependencyManager {
       await shell.run('flutter pub add $dependencie');
       return ExitCode.success.code;
     } catch (_) {
-      return ExitCode.ioError.code;
+      throw ErrorWhileSetupDependencies(msg: errorWhileSetupdep);
     }
   }
 }

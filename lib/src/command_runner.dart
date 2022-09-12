@@ -1,8 +1,8 @@
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:mason_logger/mason_logger.dart';
+import 'package:neat_cli/core/errors/exceptions.dart';
 import 'package:neat_cli/src/commands/commands.dart';
-import 'package:neat_cli/src/commands/create_command.dart';
 import 'package:neat_cli/src/version.dart';
 import 'package:pub_updater/pub_updater.dart';
 
@@ -35,9 +35,8 @@ class NeatCliCommandRunner extends CommandRunner<int> {
       );
 
     // Add sub commands
-    addCommand(SampleCommand(logger: _logger));
-    addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
     addCommand(CreateCommand(logger: _logger));
+    addCommand(FeatureCommand(logger: _logger));
   }
   final Logger _logger;
   final PubUpdater _pubUpdater;
@@ -66,6 +65,26 @@ class NeatCliCommandRunner extends CommandRunner<int> {
         ..err(e.message)
         ..info('')
         ..info(e.usage);
+      return ExitCode.usage.code;
+    } on ErrorWhileInstallingYourDependencies catch (e) {
+      _logger
+        ..err(e.errorMsg)
+        ..info('');
+      return ExitCode.usage.code;
+    } on ErrorWhileSetupDependencies catch (e) {
+      _logger
+        ..err(e.errorMsg)
+        ..info('');
+      return ExitCode.usage.code;
+    } on ErrorWhileCreateProject catch (e) {
+      _logger
+        ..err(e.errorMsg)
+        ..info('');
+      return ExitCode.usage.code;
+    } on ProjectExist catch (e) {
+      _logger
+        ..err(e.errorMsg)
+        ..info('');
       return ExitCode.usage.code;
     }
   }
