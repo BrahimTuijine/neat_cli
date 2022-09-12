@@ -86,6 +86,11 @@ class NeatCliCommandRunner extends CommandRunner<int> {
         ..err(e.errorMsg)
         ..info('');
       return ExitCode.usage.code;
+    } on NoProjectFound catch (e){
+            _logger
+        ..err(e.errorMsg)
+        ..info('');
+      return ExitCode.usage.code;
     }
   }
 
