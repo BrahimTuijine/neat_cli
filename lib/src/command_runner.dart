@@ -22,17 +22,12 @@ class NeatCliCommandRunner extends CommandRunner<int> {
         _pubUpdater = pubUpdater ?? PubUpdater(),
         super(executableName, description) {
     // Add root options and flags
-    argParser
-      ..addFlag(
-        'version',
-        abbr: 'v',
-        negatable: false,
-        help: 'Print the current version.',
-      )
-      ..addFlag(
-        'verbose',
-        help: 'Noisy logging, including all shell commands executed.',
-      );
+    argParser.addFlag(
+      'version',
+      abbr: 'v',
+      negatable: false,
+      help: 'Print the current version.',
+    );
 
     // Add sub commands
     addCommand(CreateCommand(logger: _logger));
@@ -45,9 +40,6 @@ class NeatCliCommandRunner extends CommandRunner<int> {
   Future<int> run(Iterable<String> args) async {
     try {
       final topLevelResults = parse(args);
-      if (topLevelResults['verbose'] == true) {
-        _logger.level = Level.verbose;
-      }
       return await runCommand(topLevelResults) ?? ExitCode.success.code;
     } on FormatException catch (e, stackTrace) {
       // On format errors, show the commands error message, root usage and
@@ -86,8 +78,8 @@ class NeatCliCommandRunner extends CommandRunner<int> {
         ..err(e.errorMsg)
         ..info('');
       return ExitCode.usage.code;
-    } on NoProjectFound catch (e){
-            _logger
+    } on NoProjectFound catch (e) {
+      _logger
         ..err(e.errorMsg)
         ..info('');
       return ExitCode.usage.code;
@@ -118,7 +110,7 @@ class NeatCliCommandRunner extends CommandRunner<int> {
 
     final int? exitCode;
     if (topLevelResults['version'] == true) {
-      _logger.info(packageVersion);
+      _logger.info('🧼 neat_cli version $packageVersion');
       exitCode = ExitCode.success.code;
     } else {
       exitCode = await super.runCommand(topLevelResults);

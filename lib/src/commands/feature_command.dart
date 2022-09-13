@@ -49,7 +49,7 @@ class FeatureCommand extends Command<int> {
     /// loop throw the feature folder structure and call directoryManager
     final current = Directory.current;
     newFeature.forEach((key1, value1) {
-      _logger.info('🏗️ Creating $key1 layer');
+      _logger.info('🏗️  Creating $key1 layer');
       value1.forEach((key2, value2) {
         final path = '$featureBase$featureName/$value2';
         _folderManager.createFolder(path, current);
