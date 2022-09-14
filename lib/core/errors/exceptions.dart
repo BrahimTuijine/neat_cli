@@ -25,6 +25,13 @@ class ProjectExist implements Exception {
   String get errorMsg => msg;
 }
 
+class RepositoryNotFound implements Exception {
+  RepositoryNotFound({required this.msg});
+  final String msg;
+
+  String get errorMsg => msg;
+}
+
 class NoProjectFound implements Exception {
   NoProjectFound({required this.msg});
   final String msg;

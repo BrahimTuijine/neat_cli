@@ -1,6 +1,6 @@
 import 'package:args/command_runner.dart';
 import 'package:mason_logger/mason_logger.dart';
-import 'package:neat_cli/core/constants/strings.dart';
+import 'package:neat_cli/core/constants/logs_errors.dart';
 import 'package:neat_cli/core/errors/exceptions.dart';
 import 'package:process_run/shell.dart';
 

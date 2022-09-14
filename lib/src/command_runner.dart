@@ -32,6 +32,7 @@ class NeatCliCommandRunner extends CommandRunner<int> {
     // Add sub commands
     addCommand(CreateCommand(logger: _logger));
     addCommand(FeatureCommand(logger: _logger));
+    addCommand(SettleCommand(logger: _logger));
   }
   final Logger _logger;
   final PubUpdater _pubUpdater;
@@ -79,6 +80,11 @@ class NeatCliCommandRunner extends CommandRunner<int> {
         ..info('');
       return ExitCode.usage.code;
     } on NoProjectFound catch (e) {
+      _logger
+        ..err(e.errorMsg)
+        ..info('');
+      return ExitCode.usage.code;
+    } on RepositoryNotFound catch (e) {
       _logger
         ..err(e.errorMsg)
         ..info('');

@@ -7,3 +7,4 @@
 
 export 'create_command.dart';
 export 'feature_command.dart';
+export 'settle_command.dart';
