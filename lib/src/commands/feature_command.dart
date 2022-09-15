@@ -65,6 +65,15 @@ class FeatureCommand extends Command<int> {
       throw NoProjectFound(msg: noProject);
     }
 
+    final existFeature =
+        Directory('${Directory.current.path}/lib/features/$featureName')
+            .existsSync();
+
+    if (existFeature) {
+      _logger.warn('Feature Exist [SKIPED]');
+      return ExitCode.success.code;
+    }
+
     /// loop throw the feature folder structure and call directoryManager
     final current = Directory.current;
     newFeature.forEach((key1, value1) {
@@ -75,9 +84,10 @@ class FeatureCommand extends Command<int> {
       });
     });
 
-    // todo : create abstract repository
+    /// create an abstract class inside the lib/feature/domain/repositories
     var path =
-        '$featureBase$featureName/${newFeature['domain']!['repositories'].toString()}';
+        '$featureBase$featureName/${newFeature['domain']!['repositories'].toString()}/$featureName'
+        '_repository.dart';
     _fileManager.createFile(
       path,
       abstractRepoContent.replaceAll(
@@ -86,38 +96,51 @@ class FeatureCommand extends Command<int> {
       ),
     );
 
-    // todo : create a model and entity for with the feature name
-    // todo : default => create empty model and entitys
-    // if (argResults!['entity'] != null) {
-    //   path = '$featureBase$featureName/${newFeature['domain']!['entities']}';
-    //   await _modelEntityGen.generateEntity(
-    //     argResults!['entity'].toString(),
-    //     path,
-    //     featureName,
-    //   );
-    // } else {
-    //   path = '$featureBase$featureName/${newFeature['domain']!['entities']}';
-    //   await _modelEntityGen.generateEntity(
-    //     null,
-    //     path,
-    //     featureName,
-    //   );
-    // }
-    // if (argResults!['model'] != null) {
-    //   path = '$featureBase$featureName/${newFeature['data']!['models']}';
-    //   await _modelEntityGen.generateEntity(
-    //     argResults!['model'].toString(),
-    //     path,
-    //     featureName,
-    //   );
-    // } else {
-    //   path = '$featureBase$featureName/${newFeature['data']!['models']}';
-    //   await _modelEntityGen.generateEntity(
-    //     null,
-    //     path,
-    //     featureName,
-    //   );
-    // }
+    // create a failures file inside the lib/core/errors
+    path = '${folderStructure['core']!['errors'].toString()}/$failuresPath';
+    _fileManager.createFile(path, failuresContent);
+
+    // check if the user provide an entity or a model
+    // if, then create a model and entity using the resource provided
+    // else, create an empty entity and model
+    if (argResults!['entity'] != null) {
+      path =
+          '$featureBase$featureName/${newFeature['domain']!['entities'].toString()}/$featureName'
+          '_entity.dart';
+      await _modelEntityGen.generateEntity(
+        argResults!['entity'].toString(),
+        path,
+        featureName,
+      );
+    } else {
+      path =
+          '$featureBase$featureName/${newFeature['domain']!['entities'].toString()}/$featureName'
+          '_entity.dart';
+      await _modelEntityGen.generateEntity(
+        null,
+        path,
+        featureName,
+      );
+    }
+    if (argResults!['model'] != null) {
+      path =
+          '$featureBase$featureName/${newFeature['data']!['models'].toString()}/$featureName'
+          '_model.dart';
+      await _modelEntityGen.generateEntity(
+        argResults!['model'].toString(),
+        path,
+        featureName,
+      );
+    } else {
+      path =
+          '$featureBase$featureName/${newFeature['data']!['models'].toString()}/$featureName'
+          '_model.dart';
+      await _modelEntityGen.generateModel(
+        null,
+        path,
+        featureName,
+      );
+    }
 
     // todo : create new bloc
     if (argResults!['bloc'] == true) {}

@@ -1,6 +1,13 @@
 const String mainDartPath = 'lib/main.dart';
 const String featureBase = 'lib/features/';
 
+/* Failures */
+const String failuresPath = 'failures.dart';
+const String failuresContent = '''
+import 'package:equatable/equatable.dart';
+abstract class Failure extends Equatable {}
+''';
+
 /* NEW FEATURE */
 const Map<String, Map<String, String>> newFeature = {
   'data': {
@@ -9,7 +16,7 @@ const Map<String, Map<String, String>> newFeature = {
     'repositories': 'data/repositories',
   },
   'domain': {
-    'entites': 'domain/entites',
+    'entities': 'domain/entities',
     'repositories': 'domain/repositories',
     'usecases': 'domain/usecases'
   },
