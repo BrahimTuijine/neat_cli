@@ -1,4 +1,3 @@
-import 'package:args/command_runner.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:neat_cli/core/constants/logs_errors.dart';
 import 'package:neat_cli/core/errors/exceptions.dart';
@@ -23,11 +22,11 @@ class DependencyManager {
         if (!deps.contains(element)) {
           finalDep.add(element);
         } else {
-          Logger().warn('$element is already installed SKIPED');
+          Logger().info('''${styleBold.wrap('${lightYellow.wrap('$element is already installed SKIPED')}')}''');
         }
       }
       if (finalDep.isNotEmpty) {
-        Logger().info('📥📥 Adding your dependencies ${finalDep.join('-')}');
+        Logger().info('''${styleBold.wrap('${lightBlue.wrap('📥 Adding your dependencies ${finalDep.join('-')}')}')}''');
         await shell.run('flutter pub add ${finalDep.join(' ')}');
       }
 
@@ -39,7 +38,7 @@ class DependencyManager {
 
   Future<int> installDependencies(Shell shell) async {
     try {
-      Logger().info('📥📥 Installing dependencies ');
+      Logger().info('''${styleBold.wrap('${lightBlue.wrap('📥 Installing dependencies $dependencie')}')}''');
       await shell.run('flutter pub add $dependencie');
       return ExitCode.success.code;
     } catch (_) {

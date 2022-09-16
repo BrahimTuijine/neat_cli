@@ -65,13 +65,13 @@ const Map<String, Map<String, String>> folderStructure = {
 /* EMPTY MODEL */
 const String emptyModel = '''
 class * {
-
+  *();
 }
 ''';
 /* EMPTY ENTITY */
 const String emptyEntity = '''
 class * {
-  
+  *();
 }
 ''';
 

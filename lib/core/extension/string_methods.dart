@@ -7,9 +7,31 @@ extension StrngMethods on String {
     return toList.join();
   }
 
+  String toTtile(){
+    final list = split('');
+    list[0] = list[0].toUpperCase();
+    return list.join();
+  }
+
   String titlize() {
     final list = toLowerCase().split('');
     list[0] = list[0].toUpperCase();
     return list.join();
+  }
+
+  String toFileName() {
+    final str = toCamelCase();
+    final list = str.split('');
+    final result = <String>[];
+    for (final element in list) {
+      if (element == element.toUpperCase()) {
+        result
+          ..add('_')
+          ..add(element.toLowerCase());
+      } else {
+        result.add(element);
+      }
+    }
+    return result.join();
   }
 }

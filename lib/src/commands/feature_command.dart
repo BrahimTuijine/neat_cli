@@ -70,24 +70,34 @@ class FeatureCommand extends Command<int> {
             .existsSync();
 
     if (existFeature) {
-      _logger.warn('Feature Exist [SKIPED]');
+      _logger.info(
+          '''${styleBold.wrap('${lightYellow.wrap('Feature $featureName Exist [SKIPED]')}')}''');
       return ExitCode.success.code;
     }
 
     /// loop throw the feature folder structure and call directoryManager
     final current = Directory.current;
     newFeature.forEach((key1, value1) {
-      _logger.info('🏗️  Creating $key1 layer');
+      _logger.info(
+        '''${styleBold.wrap('${lightBlue.wrap('${key1.titlize()} Layer')}')}''',
+      );
       value1.forEach((key2, value2) {
         final path = '$featureBase$featureName/$value2';
+        _logger.info(
+            '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap('${current.path}/$path')}')}''');
         _folderManager.createFolder(path, current);
       });
     });
 
     /// create an abstract class inside the lib/feature/domain/repositories
+    _logger.info(
+        '''${styleBold.wrap('${lightBlue.wrap('Preparing Files...')}')}''');
     var path =
         '$featureBase$featureName/${newFeature['domain']!['repositories'].toString()}/$featureName'
         '_repository.dart';
+    _logger.info(
+      '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+    );
     _fileManager.createFile(
       path,
       abstractRepoContent.replaceAll(
@@ -96,9 +106,7 @@ class FeatureCommand extends Command<int> {
       ),
     );
 
-    // create a failures file inside the lib/core/errors
-    path = '${folderStructure['core']!['errors'].toString()}/$failuresPath';
-    _fileManager.createFile(path, failuresContent);
+
 
     // check if the user provide an entity or a model
     // if, then create a model and entity using the resource provided
@@ -107,6 +115,9 @@ class FeatureCommand extends Command<int> {
       path =
           '$featureBase$featureName/${newFeature['domain']!['entities'].toString()}/$featureName'
           '_entity.dart';
+      _logger.info(
+        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+      );
       await _modelEntityGen.generateEntity(
         argResults!['entity'].toString(),
         path,
@@ -116,6 +127,9 @@ class FeatureCommand extends Command<int> {
       path =
           '$featureBase$featureName/${newFeature['domain']!['entities'].toString()}/$featureName'
           '_entity.dart';
+      _logger.info(
+        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+      );
       await _modelEntityGen.generateEntity(
         null,
         path,
@@ -126,6 +140,9 @@ class FeatureCommand extends Command<int> {
       path =
           '$featureBase$featureName/${newFeature['data']!['models'].toString()}/$featureName'
           '_model.dart';
+      _logger.info(
+        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+      );
       await _modelEntityGen.generateEntity(
         argResults!['model'].toString(),
         path,
@@ -135,6 +152,9 @@ class FeatureCommand extends Command<int> {
       path =
           '$featureBase$featureName/${newFeature['data']!['models'].toString()}/$featureName'
           '_model.dart';
+      _logger.info(
+        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+      );
       await _modelEntityGen.generateModel(
         null,
         path,

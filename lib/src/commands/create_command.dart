@@ -53,10 +53,10 @@ class CreateCommand extends Command<int> {
       throw UsageException(noName, usage);
     }
     _projectManager.setProjectname(arguments[0]);
-    _logger
-        .info(lightCyan.wrap('Creating ${_projectManager.getProjectName}...'));
+    _logger.info(
+      '''${styleBold.wrap('${lightBlue.wrap('Creating ${_projectManager.getProjectName}...')} ')}''',
+    );
     final exitCode = await _projectManager.createProject();
-
     if (argResults!['package'] != null) {
       final deps = argResults!['package'] as List<String>;
       final shell = Shell(verbose: false).cd(arguments[0]);
@@ -68,9 +68,14 @@ class CreateCommand extends Command<int> {
     /// now we need to create the folder structure
     /// first set the current direcory to the project folder
     final dir = Directory('${Directory.current.path}/${arguments[0]}');
+    _logger.info(
+      '''${styleBold.wrap('${lightBlue.wrap('Preparing folder structure')}')}''',
+    );
     folderStructure.forEach((key1, value1) {
       value1.forEach((key2, value2) {
-        _logger.success('📁 Creating $key2 in $value2 ');
+        _logger.info(
+          '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap('${dir.path}/$value2')}')}''',
+        );
         _folderManager.createFolder(value2, dir);
       });
     });
@@ -80,6 +85,13 @@ class CreateCommand extends Command<int> {
       '${folderStructure['core']!['strings']}/meta_data.dart',
       metaData,
     );
+
+    // create a failures file inside the lib/core/errors
+    var path = '${folderStructure['core']!['errors'].toString()}/$failuresPath';
+    _logger.info(
+      '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+    );
+    _fileManager.createFile(path, failuresContent);
 
     return exitCode;
   }
