@@ -7,6 +7,7 @@ import 'package:neat_cli/core/constants/paths_contents.dart';
 import 'package:neat_cli/core/errors/exceptions.dart';
 import 'package:neat_cli/src/classes/file_content._cleaner.dart';
 import 'package:neat_cli/src/classes/file_manager.dart';
+import 'package:neat_cli/src/classes/settle_content_prepare.dart';
 import 'package:neat_cli/src/classes/settle_file_creator.dart';
 import 'package:process_run/shell.dart';
 
@@ -36,6 +37,7 @@ class SettleCommand extends Command<int> {
   final FileManager _fileManager = FileManager();
   final FileContentCleaner _fileContentCleaner = FileContentCleaner();
   final SettleFileCreator _settleFileCreator = SettleFileCreator();
+  final SettleContentPrepare _settelPrepareContent = SettleContentPrepare();
 
   @override
   Future<int> run() async {
@@ -103,7 +105,12 @@ class SettleCommand extends Command<int> {
     final methodsNames = _fileContentCleaner.listOfMethods(
       methodDescriptionWithName,
     );
+    final params = _fileContentCleaner.getParams(methodDescriptionWithName);
     final methodType = _fileContentCleaner.getMethods;
+    final secondType = _fileContentCleaner.getSecondType(
+      methodDescriptionWithName,
+    );
+
 
     /*
     |--------------------------------------------------------------------------
@@ -111,16 +118,39 @@ class SettleCommand extends Command<int> {
     |--------------------------------------------------------------------------
     |
     */
+    final repoImplementContent = StringBuffer();
 
+    // ignore: cascade_invocations
+    repoImplementContent.write(
+      _settelPrepareContent.repoImplementHeader(
+        repoName: repositoryName,
+      ),
+    );
     for (var i = 0; i < methodsNames.length; i++) {
+      // create use case
       _settleFileCreator.createUseCase(
+        params: params[i],
         featureName: featureName,
         repoName: repositoryName,
         method: methodsNames[i],
         methodDescription: onlyMethodDescription[i],
       );
-    }
 
+      // create RepoImplement
+      repoImplementContent.write(
+        _settelPrepareContent.repoImplementContent(
+          methodDescription: onlyMethodDescription[i],
+          methodName: methodsNames[i],
+          params: params[i],
+        ),
+      );
+    }
+    repoImplementContent.write('}');
+    _settleFileCreator.createRepoImplement(
+      repoName: repositoryName,
+      featureName: featureName,
+      content: repoImplementContent.toString(),
+    );
     return ExitCode.success.code;
   }
 }
