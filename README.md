@@ -12,7 +12,7 @@
 ![VS Code Insiders](https://img.shields.io/badge/VS%20Code%20Insiders-35b393.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 </p>
 
-<p align="center">A sample cli to create clean architecture flutter projects</p>
+<p align="center">A sample cli to create clean architecture flutter projects with bloc</p>
 
 ---
 
@@ -61,8 +61,8 @@ $ neat_cli create -h
 # Create new feature "post"
 $ neat_cli feature post
 
-# Create new feature and generate model and entity using api/json schema
-$ neat_cli feature -e entity.json -m https://jsonplaceholder.typicode.com/posts
+# Create new feature "post" and generate model and entity using api/json schema
+$ neat_cli feature post -e entity.json -m https://jsonplaceholder.typicode.com/posts
 
 # Generate files from abstract repository
 $ neat_cli settle -f post -r post_repository
