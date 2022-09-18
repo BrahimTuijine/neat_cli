@@ -27,9 +27,6 @@ npm install -g quicktype
 # Show usage help
 $ neat_cli --help
 
-# show CLI version
-$ neat_cli --version
-
 # create a new flutter project
 $ neat_cli create my_app
 
