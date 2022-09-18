@@ -10,6 +10,7 @@ import 'package:neat_cli/src/classes/file_manager.dart';
 import 'package:neat_cli/src/classes/settle_content_prepare.dart';
 import 'package:neat_cli/src/classes/settle_file_creator.dart';
 import 'package:process_run/shell.dart';
+import 'package:neat_cli/core/extension/string_methods.dart';
 
 class SettleCommand extends Command<int> {
   SettleCommand({required Logger logger}) : _logger = logger {
@@ -107,11 +108,19 @@ class SettleCommand extends Command<int> {
     );
     final params = _fileContentCleaner.getParams(methodDescriptionWithName);
     final methodType = _fileContentCleaner.getMethods;
-    final secondType = _fileContentCleaner.getSecondType(
+    final secondType = _fileContentCleaner
+        .getSecondType(
       methodDescriptionWithName,
-    );
+    )
+        .map((e) {
+      if (e.contains('*')) {
+        return e.replaceAll('*', '${featureName.titlize()}Model');
+      } else {
+        return e;
+      }
+    }).toList();
 
-
+    print(secondType);
     /*
     |--------------------------------------------------------------------------
     | CREATE THE USE CASES USING THE 4 ARRAYS
@@ -119,6 +128,22 @@ class SettleCommand extends Command<int> {
     |
     */
     final repoImplementContent = StringBuffer();
+    final dataSrouce = StringBuffer();
+    final dataSourceImplement = StringBuffer();
+
+    // ignore: cascade_invocations
+    dataSourceImplement.write(
+      _settelPrepareContent.dataSourceImplemnetHeader(
+        featureName: featureName,
+      ),
+    );
+
+    // ignore: cascade_invocations
+    dataSrouce.write(
+      _settelPrepareContent.dataSourceAbstract(
+        featureName: featureName,
+      ),
+    );
 
     // ignore: cascade_invocations
     repoImplementContent.write(
@@ -144,13 +169,44 @@ class SettleCommand extends Command<int> {
           params: params[i],
         ),
       );
+
+      // set the abstract function inside the DataSource abstract class
+      dataSrouce.write(
+        _settelPrepareContent.dataSourceAbstractFunctions(
+          returntype: secondType[i],
+          funcName: methodsNames[i],
+          params: params[i],
+        ),
+      );
+
+      // set the function inside the data source implementation
+      dataSourceImplement.write(
+        _settelPrepareContent.dataSourceImplementSource(
+          returnType: secondType[i],
+          funcName: methodsNames[i],
+          params: params[i],
+          methodType: methodType[i],
+        ),
+      );
     }
+
     repoImplementContent.write('}');
-    _settleFileCreator.createRepoImplement(
-      repoName: repositoryName,
-      featureName: featureName,
-      content: repoImplementContent.toString(),
-    );
+    dataSrouce.write('}\n\n');
+    dataSourceImplement.write('}');
+    dataSrouce.write(dataSourceImplement.toString());
+    print(dataSrouce.toString());
+
+    _settleFileCreator
+      ..createRepoImplement(
+        repoName: repositoryName,
+        featureName: featureName,
+        content: repoImplementContent.toString(),
+      )
+      ..createDataSource(
+        repoName: repositoryName,
+        featureName: featureName,
+        content: dataSrouce.toString(),
+      );
     return ExitCode.success.code;
   }
 }

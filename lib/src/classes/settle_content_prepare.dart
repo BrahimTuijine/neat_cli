@@ -1,7 +1,6 @@
 import 'package:neat_cli/core/extension/string_methods.dart';
 
 class SettleContentPrepare {
-
   String repoImplementHeader({required String repoName}) {
     return '''
 class ${repoName}Implement implements $repoName {
@@ -22,7 +21,7 @@ class ${repoName}Implement implements $repoName {
     throw UnimplementedError();
   }
 ''';
-}
+  }
 
   // prepare usecase
   String useCaseContnet({
@@ -60,13 +59,46 @@ class ${method.toTtile()}UseCase{
 ''';
   }
 
+  String dataSourceAbstract({required String featureName}) {
+    return 'import "package:dartz/dartz.dart";\nimport "package:http/http.dart" as http;\nabstract class ${featureName.toTtile()}DataSource {\n';
+  }
 
-  String dateSourceAbstract({required String featureName}){
+  String dataSourceAbstractFunctions({
+    required String returntype,
+    required String funcName,
+    required String params,
+  }) {
+    return ' Future<$returntype> $funcName($params);\n';
+  }
+
+  String dataSourceImplemnetHeader({
+    required String featureName,
+  }) {
     return '''
-abstract class ${featureName.toTtile()}DataSource {
-  Future<List<TodoModel>> getAllTodo();
-  Future<Unit> addTodo(TodoEntity todo);
-}
+class DataSourceImplement implements ${featureName.toTtile()}DataSource {
+  final http.Client client;
+  DataSourceImplement({required this.client});
 ''';
-}
+  }
+
+  String dataSourceImplementSource({
+    required String returnType,
+    required String funcName,
+    required String params,
+    required String methodType,
+  }) {
+    return '''
+@override
+  Future<$returnType> $funcName($params) async {
+    final headers = <String, String>{
+      "Content-Type" : "application/json",
+      "Accept" : "application/json"
+    };
+    final response = await client.$methodType(
+      Uri.parse(''),
+      headers: headers,
+    );
+  }
+''';
+  }
 }

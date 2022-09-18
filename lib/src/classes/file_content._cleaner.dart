@@ -38,10 +38,13 @@ class FileContentCleaner {
           one.lastIndexOf('>'),
         );
         one = one.join().replaceAll(element.join(), '*').split('');
+      }else if(one.join().contains('Entity')){
+        one = '*'.split('');
+      }else{
+        one = one;
       }
       result.add(one.join());
     }
-
     return result;
   }
 

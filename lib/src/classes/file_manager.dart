@@ -16,6 +16,9 @@ class FileManager {
     final file = File(path);
     final fileName = path.split('/').last;
     if (!fileExist(path)) {
+      Logger().info(
+        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+      );
       file.writeAsString(content);
     } else {
       Logger().info(
