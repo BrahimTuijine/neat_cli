@@ -1,4 +1,4 @@
-<h1 align="center" style="font-size: 60px;">
+<h1 align="center">
     neat_cli 🧼
 </h1>
 
@@ -17,6 +17,16 @@
 <p align="center">A sample cli to create clean architecture flutter projects</p>
 
 ---
+
+## Features
+- [x] create new flutter project
+- [x] create new feature with model and entity
+- [x] generate (usecases, repository, dataresources) from abstract class
+- [ ] make bloc
+- [ ] make entity, model from resources
+
+
+
 
 ## Getting Started 🚀
 ### Install ⬇️ 
@@ -59,6 +69,21 @@ $ neat_cli feature -e entity.json -m https://jsonplaceholder.typicode.com/posts
 $ neat_cli settle -f post -r post_repository
 
 ```
+
+## Soon
+```sh
+# make new bloc inside feature
+$ neat_cli make bloc -f post
+
+# make entity inside feature
+$ neat_cli make entity -f post --schema file.json
+
+# make model inside feature
+$ neat_cli make model -f post --schema https://jsonplaceholder.typicode.com/posts
+```
+
+
+
 
 [coverage_badge]: coverage_badge.svg
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
