@@ -7,6 +7,7 @@
 ![coverage][coverage_badge]
 [![License: MIT][license_badge]][license_link]
 ![version](https://img.shields.io/badge/version-0.0.1-blue)
+[![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/MerseniBilel)
 [![Twitter Follow](https://img.shields.io/twitter/follow/MerseniBilel.svg?style=social)](https://twitter.com/MerseniBilel) 
 
 ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
