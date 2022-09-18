@@ -30,6 +30,7 @@ class NeatCliCommandRunner extends CommandRunner<int> {
     );
 
     // Add sub commands
+    addCommand(UpdateCommand(logger: _logger));
     addCommand(CreateCommand(logger: _logger));
     addCommand(FeatureCommand(logger: _logger));
     addCommand(SettleCommand(logger: _logger));
