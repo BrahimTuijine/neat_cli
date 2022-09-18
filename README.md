@@ -11,57 +11,46 @@ A Very Good Project created by Very Good CLI..
 ---
 
 ## Getting Started 🚀
-
-If the CLI application is available on [pub](https://pub.dev), activate globally via:
+Activate globally via:
 
 ```sh
 dart pub global activate neat_cli
 ```
-
-Or locally via:
-
+If you want to use the model,entity generator using api resources or json schema you need to install quicktype
 ```sh
-dart pub global activate --source=path <path to this package>
+npm install -g quicktype
 ```
 
 ## Usage
 
 ```sh
-# Sample command
-$ neat_cli sample
-
-# Sample command optioon
-$ neat_cli sample --cyan
-
-# Show CLI version
-$ neat_cli --version
-
 # Show usage help
 $ neat_cli --help
+
+# show CLI version
+$ neat_cli --version
+
+# create a new flutter project
+$ neat_cli create my_app
+
+# show CLI version
+$ neat_cli --version
+
+# shwo command usage help
+$ neat_cli help create
+# or
+$ neat_cli create -h
+
+# create new feature "post" 
+$ neat_cli feature post
+
+# create new feature and generate model and entity using from api/json
+$ neat_cli feature -e entity.json -m https://jsonplaceholder.typicode.com/posts
+
+# generate files from abstract repository
+$ neat_cli settle -f post -r post_repository
+
 ```
-
-## Running Tests with coverage 🧪
-
-To run all unit tests use the following command:
-
-```sh
-$ dart pub global activate coverage 1.2.0
-$ dart test --coverage=coverage
-$ dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info
-```
-
-To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov)
-.
-
-```sh
-# Generate Coverage Report
-$ genhtml coverage/lcov.info -o coverage/
-
-# Open Coverage Report
-$ open coverage/index.html
-```
-
----
 
 [coverage_badge]: coverage_badge.svg
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
