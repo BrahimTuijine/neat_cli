@@ -1,6 +1,6 @@
-<p align="center" style="font-size: 60px;">
+<h1 align="center" style="font-size: 60px;">
     neat_cli 🧼
-</p>
+</h1>
 
 <p align="center">
 
