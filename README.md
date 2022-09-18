@@ -4,8 +4,6 @@
 
 <p align="center">
 
-![coverage][coverage_badge]
-[![License: MIT][license_badge]][license_link]
 ![version](https://img.shields.io/badge/version-0.0.1-blue)
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/MerseniBilel)
 [![Twitter Follow](https://img.shields.io/twitter/follow/MerseniBilel.svg?style=social)](https://twitter.com/MerseniBilel) 
@@ -24,6 +22,7 @@
 - [x] generate (usecases, repository, dataresources) from abstract class
 - [ ] make bloc
 - [ ] make entity, model from resources
+- [ ] auto import dependencies
 
 
 
@@ -48,43 +47,36 @@ npm install -g quicktype
 # Show usage help
 $ neat_cli --help
 
-# create a new flutter project
+# Create a new flutter project
 $ neat_cli create my_app
 
-# show CLI version
+# Show CLI version
 $ neat_cli --version
 
-# shwo command usage help
+# Shwo command usage help
 $ neat_cli help create
-# or
+# Or
 $ neat_cli create -h
 
-# create new feature "post"
+# Create new feature "post"
 $ neat_cli feature post
 
-# create new feature and generate model and entity using from api/json
+# Create new feature and generate model and entity using api/json schema
 $ neat_cli feature -e entity.json -m https://jsonplaceholder.typicode.com/posts
 
-# generate files from abstract repository
+# Generate files from abstract repository
 $ neat_cli settle -f post -r post_repository
 
 ```
 
 ## Soon
 ```sh
-# make new bloc inside feature
+# Make new bloc inside of a feature
 $ neat_cli make bloc -f post
 
-# make entity inside feature
+# Make entity inside of a feature
 $ neat_cli make entity -f post --schema file.json
 
-# make model inside feature
+# Make model inside of feature
 $ neat_cli make model -f post --schema https://jsonplaceholder.typicode.com/posts
 ```
-
-
-
-
-[coverage_badge]: coverage_badge.svg
-[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[license_link]: https://opensource.org/licenses/MIT
