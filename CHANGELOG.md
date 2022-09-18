@@ -4,3 +4,7 @@
 * create new feature folder structure with (model/entity) files 
 * generate (usecases, repository, dataresources) from abstract class
  
+## 0.0.2
+
+* fix readme
+* remove unnecessary print
