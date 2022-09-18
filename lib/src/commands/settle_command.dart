@@ -120,7 +120,6 @@ class SettleCommand extends Command<int> {
       }
     }).toList();
 
-    print(secondType);
     /*
     |--------------------------------------------------------------------------
     | CREATE THE USE CASES USING THE 4 ARRAYS
@@ -194,7 +193,6 @@ class SettleCommand extends Command<int> {
     dataSrouce.write('}\n\n');
     dataSourceImplement.write('}');
     dataSrouce.write(dataSourceImplement.toString());
-    print(dataSrouce.toString());
 
     _settleFileCreator
       ..createRepoImplement(
