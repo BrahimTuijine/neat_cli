@@ -62,7 +62,3 @@ $ neat_cli settle -f post -r post_repository
 [coverage_badge]: coverage_badge.svg
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
-[tiwitter_link]: https://twitter.com/MerseniBilel
-
-
-[version_badge]: 0.0.1
