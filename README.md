@@ -7,7 +7,7 @@
 ![coverage][coverage_badge]
 [![License: MIT][license_badge]][license_link]
 ![version](https://img.shields.io/badge/version-0.0.1-blue)
-![tiwitter_link](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=social&logo=Twitter&logoColor=blue)
+[![Twitter Follow](https://img.shields.io/twitter/follow/MerseniBilel.svg?style=social)](https://twitter.com/MerseniBilel) 
 
 ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
 ![VS Code Insiders](https://img.shields.io/badge/VS%20Code%20Insiders-35b393.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
