@@ -9,6 +9,10 @@
 * fix readme
 * remove unnecessary print
 
-# 0.0.3
+## 0.0.3
 
 * add update command
+
+## 0.0.4
+
+* fix faild update
