@@ -9,42 +9,15 @@ class FileContentCleaner {
 
     for (final str in descriptions) {
       final list = str
-          .substring(str.indexOf(',') + 1, str.lastIndexOf('>'))
+          .substring(str.indexOf(',') + 1, str.lastIndexOf('>') - 1)
           .trim()
           .trimLeft()
-          .trimRight()
-          .split('');
-      var i = 0;
-      var numberOfOpen = 0;
-      var numberOfclose = 0;
-      for (final element in list) {
-        if (element == '<') numberOfOpen++;
-      }
-      var one = <String>[];
-      while (i < list.length) {
-        if (numberOfOpen > 0) {
-          if (numberOfOpen == numberOfclose) break;
-          if (list[i] == '>') numberOfclose++;
-          one.add(list[i]);
-        } else {
-          if (list[i] == '>') break;
-          one.add(list[i]);
-        }
-        i++;
-      }
-      if (one.join().contains('<')) {
-        var element = one.sublist(
-          one.indexOf('<')+1,
-          one.lastIndexOf('>'),
-        );
-        one = one.join().replaceAll(element.join(), '*').split('');
-      }else if(one.join().contains('Entity')){
-        one = '*'.split('');
-      }else{
-        one = one;
-      }
-      result.add(one.join());
+          .trimRight();
+
+      result.add(list);
     }
+
+
     return result;
   }
 
@@ -74,7 +47,7 @@ class FileContentCleaner {
 
   List<String> listDirtyFunction(String content) {
     final result = <String>[];
-    var list = content
+    final list = content
         .substring(
           content.indexOf('{') + 1,
           content.lastIndexOf('}'),

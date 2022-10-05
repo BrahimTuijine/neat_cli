@@ -5,12 +5,12 @@ import 'package:mason_logger/mason_logger.dart';
 import 'package:neat_cli/core/constants/logs_errors.dart';
 import 'package:neat_cli/core/constants/paths_contents.dart';
 import 'package:neat_cli/core/errors/exceptions.dart';
+import 'package:neat_cli/core/extension/string_methods.dart';
 import 'package:neat_cli/src/classes/file_content._cleaner.dart';
 import 'package:neat_cli/src/classes/file_manager.dart';
 import 'package:neat_cli/src/classes/settle_content_prepare.dart';
 import 'package:neat_cli/src/classes/settle_file_creator.dart';
 import 'package:process_run/shell.dart';
-import 'package:neat_cli/core/extension/string_methods.dart';
 
 class SettleCommand extends Command<int> {
   SettleCommand({required Logger logger}) : _logger = logger {
@@ -58,7 +58,7 @@ class SettleCommand extends Command<int> {
 
     // * running dart format .
     _logger.info(
-        '''${styleBold.wrap('${lightBlue.wrap('Running dart format ...')}')}''');
+        '''${styleBold.wrap('${lightBlue.wrap('Running dart format ...')}')}''',);
     await _shell.run('dart format .');
 
     /// check if the file exist;
@@ -84,6 +84,7 @@ class SettleCommand extends Command<int> {
       abstractfileContent,
     );
 
+    // ignore: unused_local_variable
     final cleanListFunction = _fileContentCleaner.getCleanListFunctions(
       dirtyListOfFunction,
     );

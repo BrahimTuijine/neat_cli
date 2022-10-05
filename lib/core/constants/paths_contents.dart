@@ -8,6 +8,16 @@ import 'package:equatable/equatable.dart';
 abstract class Failure extends Equatable {}
 ''';
 
+
+//Exceptions
+const String exceptionsPath = 'exceptions.dart';
+const String exceptionContent = '''
+class ServerException implements Exception {}
+''';
+
+
+
+
 /* NEW FEATURE */
 const Map<String, Map<String, String>> newFeature = {
   'data': {
