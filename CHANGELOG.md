@@ -16,3 +16,7 @@
 ## 0.0.4
 
 * fix faild update
+
+## 0.0.5
+* fix some issues
+* update data Ressource

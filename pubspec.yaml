@@ -1,6 +1,6 @@
 name: neat_cli
 description: Neat, Create FLutter Clean Archtecture Projects with bloc.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/MerseniBilel/neat_cli.git
 
 environment:
