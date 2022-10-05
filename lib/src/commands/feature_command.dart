@@ -10,7 +10,6 @@ import 'package:neat_cli/src/classes/clean_argument.dart';
 import 'package:neat_cli/src/classes/file_manager.dart';
 import 'package:neat_cli/src/classes/folder_manager.dart';
 import 'package:neat_cli/src/classes/model_entity_generator.dart';
-import 'package:process_run/shell.dart';
 
 class FeatureCommand extends Command<int> {
   FeatureCommand({required Logger logger}) : _logger = logger {
@@ -47,7 +46,6 @@ class FeatureCommand extends Command<int> {
   final Logger _logger;
   final FileManager _fileManager = FileManager();
   final FolderManager _folderManager = FolderManager();
-  final Shell _shell = Shell(verbose: false);
   final ModelEntityGen _modelEntityGen = ModelEntityGen();
   @override
   Future<int> run() async {
@@ -71,7 +69,7 @@ class FeatureCommand extends Command<int> {
 
     if (existFeature) {
       _logger.info(
-          '''${styleBold.wrap('${lightYellow.wrap('Feature $featureName Exist [SKIPED]')}')}''');
+          '''${styleBold.wrap('${lightYellow.wrap('Feature $featureName Exist [SKIPED]')}')}''',);
       return ExitCode.success.code;
     }
 
@@ -84,14 +82,14 @@ class FeatureCommand extends Command<int> {
       value1.forEach((key2, value2) {
         final path = '$featureBase$featureName/$value2';
         _logger.info(
-            '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap('${current.path}/$path')}')}''');
+            '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap('${current.path}/$path')}')}''',);
         _folderManager.createFolder(path, current);
       });
     });
 
     /// create an abstract class inside the lib/feature/domain/repositories
     _logger.info(
-        '''${styleBold.wrap('${lightBlue.wrap('Preparing Files...')}')}''');
+        '''${styleBold.wrap('${lightBlue.wrap('Preparing Files...')}')}''',);
     var path =
         '$featureBase$featureName/${newFeature['domain']!['repositories'].toString()}/$featureName'
         '_repository.dart';

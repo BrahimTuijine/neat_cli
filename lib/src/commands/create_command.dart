@@ -93,6 +93,15 @@ class CreateCommand extends Command<int> {
     );
     _fileManager.createFile(path, failuresContent);
 
+    // create exceptions inside lib/core/errors
+    path = '${folderStructure['core']!['errors'].toString()}/$exceptionsPath';
+    _logger.info(
+      '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
+    );
+    _fileManager.createFile(path, exceptionContent);
+
+
+
     return exitCode;
   }
 }

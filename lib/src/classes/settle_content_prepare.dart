@@ -50,7 +50,7 @@ class ${repoName}Implement implements $repoName {
     return '''
 class ${method.toTtile()}UseCase{
   final $repoName ${repoName.toCamelCase()};
-  ${method.toTtile()}UseCase(this.${repoName.toCamelCase()});
+  ${method.toTtile()}UseCase({required this.${repoName.toCamelCase()}});
 
   $methodDescription call($params) async {
     return await ${repoName.toCamelCase()}.$method(${finalParams.join(',')});
@@ -60,7 +60,7 @@ class ${method.toTtile()}UseCase{
   }
 
   String dataSourceAbstract({required String featureName}) {
-    return 'import "package:dartz/dartz.dart";\nimport "package:http/http.dart" as http;\nabstract class ${featureName.toTtile()}DataSource {\n';
+    return 'import "package:dartz/dartz.dart";\nimport "package:http/http.dart" as http;\nimport "dart:convert";\nabstract class ${featureName.toTtile()}DataSource {\n';
   }
 
   String dataSourceAbstractFunctions({
@@ -75,9 +75,9 @@ class ${method.toTtile()}UseCase{
     required String featureName,
   }) {
     return '''
-class DataSourceImplement implements ${featureName.toTtile()}DataSource {
+class ${featureName.toTtile()}DataSourceImplement implements ${featureName.toTtile()}DataSource {
   final http.Client client;
-  DataSourceImplement({required this.client});
+  ${featureName.toTtile()}DataSourceImplement({required this.client});
 ''';
   }
 
@@ -87,6 +87,21 @@ class DataSourceImplement implements ${featureName.toTtile()}DataSource {
     required String params,
     required String methodType,
   }) {
+    var returnExpression = '';
+
+    if (returnType.contains('List')) {
+      final modelName = returnType.substring(
+        returnType.indexOf('<') + 1,
+        returnType.lastIndexOf('>'),
+      );
+      returnExpression = 'return ${modelName}FromJson(response.body)';
+    } else if (returnType.toLowerCase().contains('unit')) {
+      returnExpression = 'return Future.value(unit)';
+    } else {
+      // ignore: lines_longer_than_80_chars
+      returnExpression =
+          'return $returnType.fromJson(json.decode(response.body))';
+    }
     return '''
 @override
   Future<$returnType> $funcName($params) async {
@@ -98,6 +113,12 @@ class DataSourceImplement implements ${featureName.toTtile()}DataSource {
       Uri.parse(''),
       headers: headers,
     );
+
+    if ([200, 201].contains(response.statusCode)) {
+      $returnExpression;
+    } else {
+      throw ServerException();
+    }
   }
 ''';
   }
