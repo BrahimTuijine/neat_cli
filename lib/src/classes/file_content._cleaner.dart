@@ -1,9 +1,10 @@
 class FileContentCleaner {
   List<String> methodDescription = <String>[];
   List<String> methodType = <String>[];
+
+  // getters
   List<String> get getMethods => methodType;
   List<String> get getMethodDescription => methodDescription;
-
   List<String> getSecondType(List<String> descriptions) {
     final result = <String>[];
 
@@ -17,7 +18,6 @@ class FileContentCleaner {
       result.add(list);
     }
 
-
     return result;
   }
 
@@ -30,6 +30,39 @@ class FileContentCleaner {
         .trim()
         .trimLeft()
         .trimRight();
+  }
+
+  int returnNumberOfFunction(String content) {
+    final cleanContent =
+        content.substring(content.indexOf('{') + 1, content.lastIndexOf('}'));
+    final result = <String>[];
+    cleanContent.split('Future').forEach((element) {
+      final el = element.trim().trimLeft().trimRight();
+      if (el.isNotEmpty) {
+        result.add(el);
+      }
+    });
+    return result.length - 1;
+  }
+
+  bool checkDecorator(String content) {
+    var found = 0;
+    var i = 0;
+    final tempList = <String>['@get', '@post', '@put', '@delete', '@patch'];
+    final funcNumber = returnNumberOfFunction(content);
+    while (i < tempList.length) {
+      final element = tempList[i];
+      while (content.contains(element)) {
+        found = found + 1;
+        // ignore: parameter_assignments
+        content = content.replaceFirst(element, '');
+      }
+      i++;
+    }
+    if (found == 0 || funcNumber > found) {
+      return false;
+    }
+    return true;
   }
 
   String getRepoName(String content) {

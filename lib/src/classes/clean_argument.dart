@@ -8,8 +8,6 @@ class ArgumentCleaner {
   ) {
     final result = List<String>.of(argResults!.arguments);
     for (final element in options) {
-      print(element.abbr);
-      print(element.name);
       if (argResults[element.name] != null) {
         if (result.contains(element.name)) {
           result.remove(result[result.indexOf(element.name) + 1]);

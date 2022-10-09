@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
@@ -76,6 +77,10 @@ class SettleCommand extends Command<int> {
     // ? time to clean the content get string from abstract to } over trim it 🤣
     abstractfileContent =
         _fileContentCleaner.getfileContent(abstractfileContent);
+
+    if (!_fileContentCleaner.checkDecorator(abstractfileContent)) {
+      throw NoDecoratorsFound(msg: noDecorator);
+    }
 
     // repository name
     final repositoryName = _fileContentCleaner.getRepoName(abstractfileContent);
