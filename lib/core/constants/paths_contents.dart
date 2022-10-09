@@ -5,18 +5,19 @@ const String featureBase = 'lib/features/';
 const String failuresPath = 'failures.dart';
 const String failuresContent = '''
 import 'package:equatable/equatable.dart';
-abstract class Failure extends Equatable {}
-''';
 
+abstract class Failure extends Equatable {}
+class ServerFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+''';
 
 //Exceptions
 const String exceptionsPath = 'exceptions.dart';
 const String exceptionContent = '''
 class ServerException implements Exception {}
 ''';
-
-
-
 
 /* NEW FEATURE */
 const Map<String, Map<String, String>> newFeature = {
@@ -38,7 +39,14 @@ const Map<String, Map<String, String>> newFeature = {
 };
 /* REPO ABSTRACT CLASS CONTENT */
 
-const String abstractRepoContent = 'abstract class * {}';
+const String abstractRepoContent = '''
+  import '../../../../core/strings/meta_data.dart';
+  import "package:dartz/dartz.dart";
+  import '../../../../core/errors/failures.dart';
+  
+  abstract class * {}
+
+''';
 
 /* MATA DATA */
 const String metaData = '''
