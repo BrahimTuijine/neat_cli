@@ -41,7 +41,7 @@ class SettleFileCreator {
       repoName: repoName,
       params: params,
       method: method,
-      methodDescription: methodDescription,
+      methodDescription: methodDescription, featureName: featureName,
     );
     final path =
         '$featureBase$featureName/${newFeature['domain']!['usecases']}/${method.toFileName()}.dart';

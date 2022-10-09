@@ -1,10 +1,24 @@
 import 'package:neat_cli/core/extension/string_methods.dart';
 
+import '../../core/Utils/get_final_params.dart';
+
 class SettleContentPrepare {
-  String repoImplementHeader({required String repoName}) {
+  String repoImplementHeader({
+    required String repoName,
+    required String featureName,
+  }) {
     return '''
+  import '../../domain/repositories/${featureName}_repository.dart';
+  import '../dataresources/${featureName}_repository_data_source.dart';
+  import '../../../../core/errors/failures.dart';
+  import 'package:dartz/dartz.dart';
+  import '../../../../core/errors/exceptions.dart';
+  import '../models/${featureName}_model.dart';
+    import '../../domain/entities/${featureName}_entity.dart';
+
 class ${repoName}Implement implements $repoName {
-  ${repoName}Implement();
+  final ${featureName.toTtile()}DataSource ${featureName}DataSource;
+  ${repoName}Implement({required this.${featureName}DataSource});
 
 ''';
   }
@@ -13,54 +27,77 @@ class ${repoName}Implement implements $repoName {
     required String methodDescription,
     required String methodName,
     required String params,
+    required String featureName,
+    required String returnType,
   }) {
+    var returnFormt = '';
+
+    // "String name , int id "
+
+    if (returnType == 'Unit') {
+      returnFormt = '''
+      await ${featureName}DataSource.$methodName(${getFinalParams(params: params).join(',')});
+      return const Right(unit);
+      ''';
+    } else {
+      returnFormt = '''
+      final response = await ${featureName}DataSource.$methodName($params);
+     return Right(response);
+  ''';
+    }
+
     return '''
  @override
   $methodDescription $methodName($params) async {
-    // todo : Implement $methodName
-    throw UnimplementedError();
+    try {
+        $returnFormt
+      } on ServerException {
+        return Left(ServerFailure());
+      }
   }
 ''';
   }
 
+  
+
   // prepare usecase
   String useCaseContnet({
+    required String featureName,
     required String repoName,
     required String method,
     required String params,
     required String methodDescription,
   }) {
     // [, TodoEntity todo, int id, String name, String email,]
-    List<String> paramsSplit;
-    final finalParams = <String>[];
-    if (params.contains(',')) {
-      paramsSplit = params.split(',');
-      for (var element in paramsSplit) {
-        if (element.isNotEmpty) {
-          element = element.trim().trimLeft().trimRight();
-          finalParams.add(element.split(' ').last);
-        }
-      }
-    } else {
-      paramsSplit = params.split(' ');
-      finalParams.add(paramsSplit.last);
-    }
 
     // int i, int a
     return '''
+import 'package:dartz/dartz.dart';
+import '../repositories/${featureName}_repository.dart';
+import '../../../../core/errors/failures.dart';
+import '../entities/${featureName}_entity.dart';
+
 class ${method.toTtile()}UseCase{
   final $repoName ${repoName.toCamelCase()};
   ${method.toTtile()}UseCase({required this.${repoName.toCamelCase()}});
 
   $methodDescription call($params) async {
-    return await ${repoName.toCamelCase()}.$method(${finalParams.join(',')});
+    return await ${repoName.toCamelCase()}.$method(${getFinalParams(params: params).join(',')});
   }
 }
 ''';
   }
 
   String dataSourceAbstract({required String featureName}) {
-    return 'import "package:dartz/dartz.dart";\nimport "package:http/http.dart" as http;\nimport "dart:convert";\nabstract class ${featureName.toTtile()}DataSource {\n';
+    return '''
+    import "package:dartz/dartz.dart";
+    import "package:http/http.dart" as http;
+    import "dart:convert";
+    import '../../../../core/errors/exceptions.dart';
+    import '../models/${featureName}_model.dart';
+    import '../../domain/entities/${featureName}_entity.dart';
+    
+    abstract class ${featureName.toTtile()}DataSource {\n''';
   }
 
   String dataSourceAbstractFunctions({

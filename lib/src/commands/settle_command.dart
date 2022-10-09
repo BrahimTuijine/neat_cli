@@ -148,6 +148,7 @@ class SettleCommand extends Command<int> {
     // ignore: cascade_invocations
     repoImplementContent.write(
       _settelPrepareContent.repoImplementHeader(
+        featureName: featureName,
         repoName: repositoryName,
       ),
     );
@@ -164,6 +165,8 @@ class SettleCommand extends Command<int> {
       // create RepoImplement
       repoImplementContent.write(
         _settelPrepareContent.repoImplementContent(
+          returnType: secondType[i],
+          featureName: featureName,
           methodDescription: onlyMethodDescription[i],
           methodName: methodsNames[i],
           params: params[i],

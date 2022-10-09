@@ -1,7 +1,6 @@
 import 'package:args/args.dart';
 
 class ArgumentCleaner {
-
   /// [cleanArguments] taks the argument list and return command needs
   List<String> cleanArguments(
     ArgResults? argResults,
