@@ -14,17 +14,9 @@ import 'package:neat_cli/src/classes/model_entity_generator.dart';
 class FeatureCommand extends Command<int> {
   FeatureCommand({required Logger logger}) : _logger = logger {
     argParser
-      ..addOption(
-        'model',
-        abbr: 'm',
-        help: 'Generate model using endpoint or json file',
-      )
-      ..addOption(
-        'entity',
-        abbr: 'e',
-        help: 'Generate entity using endpoint or json file',
-      )
-      ..addFlag('bloc', abbr: 'b', help: 'Create new bloc', negatable: false);
+      ..addFlag('bloc', abbr: 'b', help: 'Generate bloc', negatable: false)
+      ..addFlag('entity', abbr: 'e', help: 'Generate entity', negatable: false)
+      ..addFlag('model', abbr: 'm', help: 'Generate model', negatable: false);
   }
   @override
   String get description => 'Create new feature folder structure';
@@ -50,7 +42,7 @@ class FeatureCommand extends Command<int> {
   @override
   Future<int> run() async {
     final arguments =
-        _argumentCleaner.cleanArguments(argResults, argParser.options.values);
+        _argumentCleaner.cleanFlags(argResults, argParser.options.values);
     if (arguments.isEmpty) {
       throw UsageException(noFeatureName, usage);
     } else if (arguments.length > 1) {
@@ -69,7 +61,8 @@ class FeatureCommand extends Command<int> {
 
     if (existFeature) {
       _logger.info(
-          '''${styleBold.wrap('${lightYellow.wrap('Feature $featureName Exist [SKIPED]')}')}''',);
+        '''${styleBold.wrap('${lightYellow.wrap('Feature $featureName Exist [SKIPED]')}')}''',
+      );
       return ExitCode.success.code;
     }
 
@@ -82,14 +75,16 @@ class FeatureCommand extends Command<int> {
       value1.forEach((key2, value2) {
         final path = '$featureBase$featureName/$value2';
         _logger.info(
-            '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap('${current.path}/$path')}')}''',);
+          '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap('${current.path}/$path')}')}''',
+        );
         _folderManager.createFolder(path, current);
       });
     });
 
     /// create an abstract class inside the lib/feature/domain/repositories
     _logger.info(
-        '''${styleBold.wrap('${lightBlue.wrap('Preparing Files...')}')}''',);
+      '''${styleBold.wrap('${lightBlue.wrap('Preparing Files...')}')}''',
+    );
     var path =
         '$featureBase$featureName/${newFeature['domain']!['repositories'].toString()}/$featureName'
         '_repository.dart';
@@ -103,25 +98,10 @@ class FeatureCommand extends Command<int> {
         '${featureName.titlize()}' 'Repository',
       ),
     );
-
-
-
     // check if the user provide an entity or a model
     // if, then create a model and entity using the resource provided
     // else, create an empty entity and model
-    if (argResults!['entity'] != null) {
-      path =
-          '$featureBase$featureName/${newFeature['domain']!['entities'].toString()}/$featureName'
-          '_entity.dart';
-      _logger.info(
-        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
-      );
-      await _modelEntityGen.generateEntity(
-        argResults!['entity'].toString(),
-        path,
-        featureName,
-      );
-    } else {
+    if (argResults!['entity'] == true) {
       path =
           '$featureBase$featureName/${newFeature['domain']!['entities'].toString()}/$featureName'
           '_entity.dart';
@@ -134,19 +114,7 @@ class FeatureCommand extends Command<int> {
         featureName,
       );
     }
-    if (argResults!['model'] != null) {
-      path =
-          '$featureBase$featureName/${newFeature['data']!['models'].toString()}/$featureName'
-          '_model.dart';
-      _logger.info(
-        '''${styleBold.wrap('${lightGreen.wrap('\u2713')}')} ${styleDim.wrap('${lightGray.wrap(path)}')}''',
-      );
-      await _modelEntityGen.generateEntity(
-        argResults!['model'].toString(),
-        path,
-        featureName,
-      );
-    } else {
+    if (argResults!['model'] == true) {
       path =
           '$featureBase$featureName/${newFeature['data']!['models'].toString()}/$featureName'
           '_model.dart';

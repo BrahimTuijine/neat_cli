@@ -58,7 +58,8 @@ class SettleCommand extends Command<int> {
 
     // * running dart format .
     _logger.info(
-        '''${styleBold.wrap('${lightBlue.wrap('Running dart format ...')}')}''',);
+      '''${styleBold.wrap('${lightBlue.wrap('Running dart format ...')}')}''',
+    );
     await _shell.run('dart format .');
 
     /// check if the file exist;
