@@ -1,7 +1,6 @@
 import 'package:args/args.dart';
 
 class ArgumentCleaner {
-
   /// [cleanArguments] taks the argument list and return command needs
   List<String> cleanArguments(
     ArgResults? argResults,
@@ -19,6 +18,19 @@ class ArgumentCleaner {
         result
           ..remove(element.name)
           ..remove('-${element.abbr}');
+      }
+    }
+    return result;
+  }
+
+  List<String> cleanFlags(
+    ArgResults? argResults,
+    Iterable<Option> options,
+  ) {
+    final result = List<String>.of(argResults!.arguments);
+    for (final element in options) {
+      if (result.contains('-${element.abbr}')) {
+        result.remove('-${element.abbr}');
       }
     }
     return result;

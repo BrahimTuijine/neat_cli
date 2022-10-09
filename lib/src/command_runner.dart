@@ -90,6 +90,11 @@ class NeatCliCommandRunner extends CommandRunner<int> {
         ..err(e.errorMsg)
         ..info('');
       return ExitCode.usage.code;
+    } on NoDecoratorsFound catch (e) {
+      _logger
+        ..err(e.errorMsg)
+        ..info('');
+      return ExitCode.usage.code;
     }
   }
 
@@ -138,8 +143,8 @@ class NeatCliCommandRunner extends CommandRunner<int> {
           ..info('')
           ..info(
             '''
-${lightYellow.wrap('Update available!')} ${lightCyan.wrap(packageVersion)} \u2192 ${lightCyan.wrap(latestVersion)}
-Run ${lightCyan.wrap('neat_cli update')} to update''',
+            ${lightYellow.wrap('Update available!')} ${lightCyan.wrap(packageVersion)} \u2192 ${lightCyan.wrap(latestVersion)}
+            Run ${lightCyan.wrap('neat_cli update')} to update''',
           );
       }
     } catch (_) {}

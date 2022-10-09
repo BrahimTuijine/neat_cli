@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
@@ -58,7 +59,8 @@ class SettleCommand extends Command<int> {
 
     // * running dart format .
     _logger.info(
-        '''${styleBold.wrap('${lightBlue.wrap('Running dart format ...')}')}''',);
+      '''${styleBold.wrap('${lightBlue.wrap('Running dart format ...')}')}''',
+    );
     await _shell.run('dart format .');
 
     /// check if the file exist;
@@ -75,6 +77,10 @@ class SettleCommand extends Command<int> {
     // ? time to clean the content get string from abstract to } over trim it 🤣
     abstractfileContent =
         _fileContentCleaner.getfileContent(abstractfileContent);
+
+    if (!_fileContentCleaner.checkDecorator(abstractfileContent)) {
+      throw NoDecoratorsFound(msg: noDecorator);
+    }
 
     // repository name
     final repositoryName = _fileContentCleaner.getRepoName(abstractfileContent);

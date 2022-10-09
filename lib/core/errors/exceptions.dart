@@ -5,6 +5,13 @@ class ErrorWhileInstallingYourDependencies implements Exception {
   String get errorMsg => msg;
 }
 
+class NoDecoratorsFound implements Exception {
+  NoDecoratorsFound({required this.msg});
+  final String msg;
+
+  String get errorMsg => msg;
+}
+
 class ErrorWhileSetupDependencies implements Exception {
   ErrorWhileSetupDependencies({required this.msg});
   final String msg;
